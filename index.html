@@ -215,9 +215,12 @@ function drawMap(){
   const pointAt=d=>{const i=at(d);const a=P[i],b=P[Math.min(P.length-1,i+1)];const f=(d-a.d)/((b.d-a.d)||1);return {X:a.X+(b.X-a.X)*f,Y:a.Y+(b.Y-a.Y)*f};};
   const car=svg.append('g'); car.append('circle').attr('r',14).attr('fill',COL.r).attr('opacity',.2); car.append('circle').attr('r',8).attr('fill',COL.r).attr('stroke','#fff').attr('stroke-width',2);
   rxMap={pointAt,car:car.node()};
-  // 把畫布撐到剛好包含路線＋所有往外推的彎道標籤，標籤才不會被切到邊
+  // 把畫布撐到包含路線＋所有往外推的標籤，且讓「路線」置中（以路線中心對稱撐開，美觀）
   const vb=svg.node().getBBox(); const M=8;
-  const VB=[vb.x-M, vb.y-M, vb.width+2*M, vb.height+2*M];
+  let tx0=1e18,tx1=-1e18,ty0=1e18,ty1=-1e18; for(const q of P){ if(q.X<tx0)tx0=q.X; if(q.X>tx1)tx1=q.X; if(q.Y<ty0)ty0=q.Y; if(q.Y>ty1)ty1=q.Y; }
+  const cx=(tx0+tx1)/2, cy=(ty0+ty1)/2;
+  const hw=Math.max(cx-vb.x, vb.x+vb.width-cx), hh=Math.max(cy-vb.y, vb.y+vb.height-cy);
+  const VB=[cx-hw-M, cy-hh-M, 2*(hw+M), 2*(hh+M)];
   rootSvg.attr('viewBox',VB.join(' '));
   el.style.minHeight=Math.round(W*VB[3]/VB[2])+'px';
   const zoom=d3.zoom().scaleExtent([1,8]).translateExtent([[VB[0],VB[1]],[VB[0]+VB[2],VB[1]+VB[3]]]).extent([[VB[0],VB[1]],[VB[0]+VB[2],VB[1]+VB[3]]]).on('zoom',ev=>svg.attr('transform',ev.transform));
