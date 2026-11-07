@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>單人教練分析</title>
+<title>北47 山路 教練分析</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
   :root{ --bg:#0b0c0f; --card:#131620; --line:#262a33; --mut:#9aa1ad; --red:#e10600; --grn:#19c37d; --amb:#f5b301; --fg:#e6e8ec; }
@@ -137,6 +137,7 @@ const COL={r:'#e10600',g:'#19c37d',a:'#f5b301'};
 const f1=v=>(Math.round(v*10)/10).toFixed(1), f2=v=>(Math.round(v*100)/100).toFixed(2);
 function fmtT(s){ const m=Math.floor(s/60), r=s-m*60; return (m>0?m+':'+(r<10?'0':''):'')+r.toFixed(1)+(m>0?'':'s'); }
 document.getElementById('title').textContent = (DATA.meta&&DATA.meta.title)||'單人教練分析';
+document.title = (DATA.meta&&DATA.meta.title)||document.title;
 document.getElementById('sub').textContent = [(DATA.meta&&DATA.meta.track),(DATA.meta&&DATA.meta.date),(DATA.meta&&DATA.meta.car?'車 '+DATA.meta.car:'')].filter(Boolean).join('　·　');
 document.getElementById('foot').textContent = '資料來源：RaceChrono　·　單人路線教練分析';
 
